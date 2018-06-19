@@ -1,0 +1,89 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Smoothiet</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/styles.css" th:href="@{~/styles.css}" type="text/css" />
+    
+    </head>
+    
+    
+    <body>
+        <section>
+            <nav>
+                <h2><span th:text="${smoothie.nimi}">Smoothien nimi</span></h2>
+                <ol>
+                    <li th:each="sra: ${RAjarjestys}">
+                        <a th:href="@{'~/raakaaine/' + ${sra.raakaAineId}}">
+                            <span th:text="${sra.nimi}">Raaka-Aineen nimi</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <span>Määrä: </span>
+                                <span th:text="${sra.maara}">maara</span>
+                            </li>
+                            <li>
+                                <span>Ohje: </span>
+                                <span th:text="${sra.ohje}">ohje</span>
+                            </li>
+
+                        </ul>
+                        <form method="POST" action="/smoothie/smoothieraakaaine/delete">
+                            <input type="hidden" name="raakaAineId" th:value="${sra.raakaAineId}"/>
+                            <input type="hidden" name="smoothieId" th:value="${sra.smoothieId}"/>
+                            <input type="submit" value="Poista"/>
+                        </form>
+                        <br/>
+                    </li>
+                </ol><br/>
+                <a href="/raaka-aineet">Raaka-aineet</a> <br/>
+                <a href="/smoothiet">Smoothiet</a> <br/>
+                <a href="/">Alotussivulle</a> <br/>
+            </nav>
+
+            <article>
+                <h3>
+                    <span>Lisää raaka-aineita</span>
+                </h3>
+
+                <form method="POST" action="/smoothie/luo/smoothieraakaaine">
+                    <input type="hidden" name="smoothieId" th:value="${smoothie.id}"/>
+
+                    <span id="s1">Raaka-aineen nimi:</span><br/>
+                    <select name="raakaAineId"  required="required" size="6">
+                        <option th:each="raakaaine: ${raakaaineet}" th:value="${raakaaine.id}"
+                                th:text="${raakaaine.nimi}">raakaaineen nimi
+                        </option>
+                    </select> <br/><br/>
+
+
+                    <span id="s3">Määrä:</span><br/>
+                    <input type="text" name="maara" required="required" maxlength="30"/> <br/><br/>
+
+                    <span id="s4">Ohje:</span><br/>
+                    <textarea name="ohje" rows="4" cols="30" maxlength="50"></textarea> <br/><br/>
+
+                    <span id="s2">Raaka-aineen järjestys:</span><br/>
+                    <select name="jarjestys" size="8" required="required">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select><br/><br/>
+
+                    <input type="submit" value="Lisää raaka-aine"/>
+                </form><br/><br/>
+            </article>
+        </section>
+
+        
+        
+        
+    </body>
+    
+</html>

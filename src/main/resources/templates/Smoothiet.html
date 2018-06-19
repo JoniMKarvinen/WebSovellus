@@ -1,0 +1,35 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Smoothiet</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/styles.css" th:href="@{~/styles.css}" type="text/css" />
+    </head>
+
+    <body>
+        <h2>Smoothiet</h2>
+        
+        <ol>
+            <li th:each="smoothiet : ${smoothie}">
+                <a th:href="@{'~/smoothie/' + ${smoothiet.id}}">
+                    <span th:text="${smoothiet.nimi}">smoothien nimi</span>
+                </a>
+                <form method="POST" action="/smoothiet/delete">
+                    <input type="hidden" name="id" th:value="${smoothiet.id}"/> 
+                    <input type="submit" value="Poista"/>
+                </form> <br/>
+            </li>
+        </ol>
+
+        <form method="POST" action="/smoothiet">
+            <input type="text" name="nimi"/><br/>
+            <input type="submit" value="Lisaa smoothie"/>
+        </form>        
+        
+        <br/><br/><br/>
+        
+        <a href="/">Alotussivulle</a>
+        
+    </body>
+</html>

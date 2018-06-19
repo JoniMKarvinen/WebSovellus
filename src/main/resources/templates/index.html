@@ -4,13 +4,17 @@
     <head>
         <title>Otsikko</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="/styles.css" th:href="@{~/styles.css}" type="text/css" />
+        
+        
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
+        <h2>Smoothie tietokanta</h2>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
 
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+
+        <p><a href="/smoothiet">Smoothiet</a></p>
+        <p><a href="/raaka-aineet">Raaka-aineet</a></p>
     </body>
 </html>

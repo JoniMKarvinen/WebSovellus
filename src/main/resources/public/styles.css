@@ -1,0 +1,74 @@
+html {
+    min-height: 100%;
+    background-attachment: fixed;
+    color: darkslategrey;
+}
+
+h2 {
+    margin-left: 20px;
+}
+
+h3{
+    margin-left: 20px;
+}
+
+nav {
+    float: left;
+    width: 25%;
+    height: 1000px;
+}
+
+article {
+    float: right;
+    width: 50%;
+    height: 1000px;
+}
+
+a {
+    margin-left: 25px;
+}
+
+a:link {
+    color: blue;
+}
+
+a:visited {
+    color: purple;
+}
+
+a:hover {
+    color: lightblue;
+}
+
+ol li {
+    margin-left: 35px;
+}
+
+ul li {
+    margin-left: 35px;
+} 
+
+input {
+    margin-left: 25px;
+}
+
+input[type=submit] {
+    margin-left: 25px;
+}
+
+textarea {
+    resize: none;
+    margin-left: 25px;
+} 
+
+select {
+    margin-left: 25px;
+}
+   
+span #s0, #s1, #s2, #s3, #s4, #s5, #s6 {
+    margin-left: 25px;
+}
+
+p {
+    margin-left: 25px;
+}
