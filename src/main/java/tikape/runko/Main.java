@@ -14,7 +14,7 @@ import tikape.runko.database.SmoothieRaakaAineDao;
 import tikape.runko.domain.SmoothieRaakaAine;
 
 public class Main {
-
+    
     public static void main(String[] args) throws Exception {
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
@@ -27,7 +27,6 @@ public class Main {
         SmoothieRaakaAineDao sraDao = new SmoothieRaakaAineDao(database);
         
         Spark.staticFileLocation("/public");
-
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("viesti", "tervehdys");
