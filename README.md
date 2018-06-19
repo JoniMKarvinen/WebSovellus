@@ -1,4 +1,7 @@
 # tikape-runko
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
+Heroku linkki:
+https://smoothietietokanta.herokuapp.com/
+
+Sovelluksen toiminta testattu Google Chrome -selaimella.
 
