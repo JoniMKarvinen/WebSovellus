@@ -18,61 +18,77 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
     @Override
     public RaakaAine findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
-        stmt.setObject(1, key);
+        
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
+            stmt.setObject(1, key);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
+
+            RaakaAine RA = new RaakaAine(nimi);
+
+            rs.close();
+            stmt.close();
+            connection.close();
+
+            return RA;
+            
+        } catch (Exception ex){
+            System.out.println("Error >> " + ex);
         }
-
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        RaakaAine RA = new RaakaAine(nimi);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return RA;
+        return null;
     }
 
     @Override
     public List<RaakaAine> findAll() throws SQLException {
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine");
 
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine");
+            ResultSet rs = stmt.executeQuery();
+            List<RaakaAine> raakaAineet = new ArrayList<>();
+            while (rs.next()) {
+                String nimi = rs.getString("nimi");
+                int id = rs.getInt("id");
+                raakaAineet.add(new RaakaAine(id, nimi));
+            }
 
-        ResultSet rs = stmt.executeQuery();
-        List<RaakaAine> raakaAineet = new ArrayList<>();
-        while (rs.next()) {
-            String nimi = rs.getString("nimi");
-            int id = rs.getInt("id");
-            raakaAineet.add(new RaakaAine(id, nimi));
+            rs.close();
+            stmt.close();
+            connection.close();
+
+            return raakaAineet;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
         }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return raakaAineet;
+        return null;
     }
     
     public boolean onkoJoOlemassa (RaakaAine ra) throws SQLException{
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE nimi = ?");
-        stmt.setString(1, ra.getNimi());
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()){
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE nimi = ?");
+            stmt.setString(1, ra.getNimi());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()){
+                stmt.close();
+                connection.close();
+                return true;
+            }
             stmt.close();
             connection.close();
-            return true;
+            return false;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
         }
-        stmt.close();
-        connection.close();
         return false;
     }
 
@@ -81,25 +97,34 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         if (raakaAine.getNimi().length() == 0 || onkoJoOlemassa(raakaAine)){
             return null;
         }
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO RaakaAine"
-                + " (nimi)"
-                + " VALUES (?)");
-        stmt.setString(1, raakaAine.getNimi());
-        stmt.executeUpdate();
-        stmt.close();
-        connection.close();
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO RaakaAine"
+                    + " (nimi)"
+                    + " VALUES (?)");
+            stmt.setString(1, raakaAine.getNimi());
+            stmt.executeUpdate();
+            stmt.close();
+            connection.close();
+            return null;
+        }catch (Exception ex) {
+            System.out.println("Error >> " + ex);
+        }
         return null;
     }
     
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
-        stmt.setInt(1, key);
-        stmt.executeUpdate();
-        stmt.close();
-        connection.close();
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+            stmt.close();
+            connection.close();
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
+        }
     }
     
     public List<RaakaAine> raakaAineetAakkosjärjestyksessä() throws SQLException {

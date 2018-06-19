@@ -18,46 +18,57 @@ public class SmoothieDao implements Dao<Smoothie, Integer> {
 
     @Override
     public Smoothie findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Smoothie WHERE id = ?");
-        stmt.setObject(1, key);
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+        
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Smoothie WHERE id = ?");
+            stmt.setObject(1, key);
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
+
+            Smoothie S = new Smoothie(id, nimi);
+
+            rs.close();
+            stmt.close();
+            connection.close();
+
+            return S;
+            
+        } catch (Exception ex) {
+            System.out.println("Error >> " + ex);
         }
-
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        Smoothie S = new Smoothie(id, nimi);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return S;
+        return null;
     }
 
     @Override
     public List<Smoothie> findAll() throws SQLException {
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Smoothie");
 
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Smoothie");
+            ResultSet rs = stmt.executeQuery();
+            List<Smoothie> Smoothiet = new ArrayList<>();
+            while (rs.next()) {
+                String nimi = rs.getString("nimi");
+                int id = rs.getInt("id");
+                Smoothiet.add(new Smoothie(id, nimi));
+            }
 
-        ResultSet rs = stmt.executeQuery();
-        List<Smoothie> Smoothiet = new ArrayList<>();
-        while (rs.next()) {
-            String nimi = rs.getString("nimi");
-            int id = rs.getInt("id");
-            Smoothiet.add(new Smoothie(id, nimi));
+            rs.close();
+            stmt.close();
+            connection.close();
+
+            return Smoothiet;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
         }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return Smoothiet;
+        return null;
     }
 
     
@@ -65,27 +76,37 @@ public class SmoothieDao implements Dao<Smoothie, Integer> {
         if (smoothie.getNimi().length() == 0){
             return null;
         }
-        Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Smoothie"
-                + " (nimi)"
-                + " VALUES (?)");
-        stmt.setString(1, smoothie.getNimi());
+        try {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Smoothie"
+                    + " (nimi)"
+                    + " VALUES (?)");
+            stmt.setString(1, smoothie.getNimi());
 
 
-        stmt.executeUpdate();
-        stmt.close();
-        conn.close();
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+            return null;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
+        }
         return null;
     }
     
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Smoothie WHERE id = ?");
-        stmt.setInt(1, key);
-        stmt.executeUpdate();
-        stmt.close();
-        connection.close();
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Smoothie WHERE id = ?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+            stmt.close();
+            connection.close();
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
+        }
+        
     }
     
         public List<Smoothie> SmoothietAkkosjärjestyksessä() throws SQLException {

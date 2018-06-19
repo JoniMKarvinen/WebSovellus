@@ -20,68 +20,86 @@ public class SmoothieRaakaAineDao {
     }
     
     public SmoothieRaakaAine findOne(Integer sId, Integer raId) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM SmoothieRaakaAine WHERE Smoothie_id = ? AND RaakaAine_id = ?");
-        stmt.setObject(1, raId);
-        stmt.setObject(2, sId);
-        ResultSet rs = stmt.executeQuery();
-        
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM SmoothieRaakaAine WHERE Smoothie_id = ? AND RaakaAine_id = ?");
+            stmt.setObject(1, raId);
+            stmt.setObject(2, sId);
+            ResultSet rs = stmt.executeQuery();
+
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            SmoothieRaakaAine SRA = new SmoothieRaakaAine(rs.getInt("smoothie_id"), rs.getInt("RaakaAine_id"), rs.getString("ohje"), rs.getString("maara"), rs.getInt("jarjestys"));
+
+            rs.close();
+            stmt.close();
+            connection.close();
+
+            return SRA;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
         }
-        
-        SmoothieRaakaAine SRA = new SmoothieRaakaAine(rs.getInt("smoothie_id"), rs.getInt("RaakaAine_id"), rs.getString("ohje"), rs.getString("maara"), rs.getInt("jarjestys"));
-        
-        rs.close();
-        stmt.close();
-        connection.close();
-        
-        return SRA;
+        return null;
     }
     
     
     public List<SmoothieRaakaAine> findAll() throws SQLException {
-        
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM SmoothieRaakaAine");
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM SmoothieRaakaAine");
 
-        ResultSet rs = stmt.executeQuery();
-        List<SmoothieRaakaAine> smoothieRaakaAineet = new ArrayList<>();
-        while (rs.next()) {
-            smoothieRaakaAineet.add(new SmoothieRaakaAine(rs.getInt("smoothie_id"), rs.getInt("RaakaAine_id"), rs.getString("ohje"), rs.getString("maara"), rs.getInt("jarjestys")));
+            ResultSet rs = stmt.executeQuery();
+            List<SmoothieRaakaAine> smoothieRaakaAineet = new ArrayList<>();
+            while (rs.next()) {
+                smoothieRaakaAineet.add(new SmoothieRaakaAine(rs.getInt("smoothie_id"), rs.getInt("RaakaAine_id"), rs.getString("ohje"), rs.getString("maara"), rs.getInt("jarjestys")));
+            }
+
+            rs.close();
+            stmt.close();
+            connection.close();
+
+            return smoothieRaakaAineet;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
         }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return smoothieRaakaAineet;
+        return null;
     }
     
     public void delete (Integer sId, Integer raId) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM SmoothieRaakaAine WHERE smoothie_id = ? AND raakaaine_id = ?");
-        stmt.setObject(1, raId);
-        stmt.setObject(2, sId);
-        stmt.executeUpdate();
-        stmt.close();
-        connection.close();
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM SmoothieRaakaAine WHERE smoothie_id = ? AND raakaaine_id = ?");
+            stmt.setObject(1, raId);
+            stmt.setObject(2, sId);
+            stmt.executeUpdate();
+            stmt.close();
+            connection.close();
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
+        }
     }
     
     public SmoothieRaakaAine saveOrUpdate(SmoothieRaakaAine SRA) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO SmoothieRaakaAine (smoothie_id, raakaaine_id, ohje, maara, jarjestys) VALUES(?, ?, ?, ?, ?)");
-        stmt.setInt(1, SRA.getSmoothieId());
-        stmt.setInt(2, SRA.getRaakaAineId());
-        stmt.setString(3, SRA.getOhje());
-        stmt.setString(4, SRA.getMaara());
-        stmt.setInt(5, SRA.getJarjestys());
-        
-        stmt.executeUpdate();
-        
-        stmt.close();
-        connection.close();
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO SmoothieRaakaAine (smoothie_id, raakaaine_id, ohje, maara, jarjestys) VALUES(?, ?, ?, ?, ?)");
+            stmt.setInt(1, SRA.getSmoothieId());
+            stmt.setInt(2, SRA.getRaakaAineId());
+            stmt.setString(3, SRA.getOhje());
+            stmt.setString(4, SRA.getMaara());
+            stmt.setInt(5, SRA.getJarjestys());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            connection.close();
+            return null;
+        }catch (Exception ex){
+            System.out.println("Error >> " + ex);
+        }
         return null;
     }
     
