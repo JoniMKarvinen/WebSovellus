@@ -41,7 +41,9 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
         lista.add("CREATE TABLE Smoothie (id SERIAL PRIMARY KEY, nimi VARCHAR(40));");
         lista.add("CREATE TABLE RaakaAine (id SERIAL PRIMARY KEY, nimi VARCHAR(40));");
-        lista.add("CREATE TABLE SmoothieRaakaAine (smoothie_id integer, raakaaine_id integer, jarjestys integer, maara varchar(40), ohje VARCHAR(100));");
+        lista.add("CREATE TABLE SmoothieRaakaAine (smoothie_id integer, raakaaine_id integer, jarjestys integer, maara varchar(40), ohje VARCHAR(100), "
+                        + "FOREIGN KEY (raakaaine_id) REFERENCES RaakaAine(id), "
+                        + "FOREIGN KEY (smoothie_id) REFERENCES Smoothie(id));");
         return lista;
     }
 }
